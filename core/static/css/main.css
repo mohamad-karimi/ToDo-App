@@ -172,3 +172,241 @@ body{
     margin-bottom:10px;
 }
 
+/* ------------- todo app ------------- */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#6C63FF,#4D44DB);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.container{
+    width:100%;
+    max-width:650px;
+    padding:20px;
+}
+
+.card{
+    background:white;
+    border-radius:20px;
+    padding:35px;
+    box-shadow:0 20px 45px rgba(0,0,0,.25);
+}
+
+h1{
+    text-align:center;
+    margin-bottom:30px;
+    color:#333;
+}
+
+.todo-form{
+    display:flex;
+    gap:10px;
+    margin-bottom:25px;
+}
+
+.todo-form input{
+    flex:1;
+    padding:14px;
+    border:none;
+    border-radius:12px;
+    background:#f2f2f2;
+    outline:none;
+    font-size:16px;
+}
+
+.todo-form button{
+    background:#6C63FF;
+    color:white;
+    border:none;
+    padding:14px 24px;
+    border-radius:12px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.todo-form button:hover{
+    background:#5148d6;
+}
+
+.todo-list{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+.todo-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:#fafafa;
+    border-radius:12px;
+    padding:16px 18px;
+    transition:.3s;
+}
+
+.todo-item:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+}
+
+.todo-left{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-size:17px;
+}
+
+.done{
+    color:#2ecc71;
+    font-size:22px;
+}
+
+.pending{
+    color:#999;
+    font-size:22px;
+}
+
+.completed{
+    text-decoration:line-through;
+    color:#999;
+}
+
+.actions{
+    display:flex;
+    gap:10px;
+}
+
+.actions a{
+    text-decoration:none;
+    color:white;
+    padding:8px 14px;
+    border-radius:8px;
+    font-size:14px;
+    transition:.3s;
+}
+
+.complete{
+    background:#2ecc71;
+}
+
+.complete:hover{
+    background:#27ae60;
+}
+
+.empty{
+    text-align:center;
+    padding:40px;
+    color:#888;
+    font-size:18px;
+}
+
+.edit {
+    display: inline-block;
+    padding: 6px 12px;
+    background-color: #3498db;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: background-color 0.2s ease;
+}
+
+.edit:hover {
+    background-color: #2980b9;
+    color: #fff;
+    text-decoration: none;
+}
+
+.card-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+}
+
+.card-header h1{
+    margin:0;
+}
+
+.logout-btn{
+    background:#ef4444;
+    color:#fff;
+    border:none;
+    border-radius:8px;
+    padding:10px 18px;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    transition:all .3s ease;
+}
+
+.logout-btn:hover{
+    background:#dc2626;
+    transform:translateY(-2px);
+    box-shadow:0 8px 20px rgba(220,38,38,.25);
+}
+
+.logout-btn:active{
+    transform:scale(.96);
+}
+
+.logout-btn:focus{
+    outline:none;
+    box-shadow:0 0 0 3px rgba(239,68,68,.25);
+}
+
+.actions form{
+    display:inline;
+    margin:0;
+}
+
+.actions button{
+    border:none;
+    color:#fff;
+    padding:8px 14px;
+    border-radius:8px;
+    font-size:14px;
+    cursor:pointer;
+    transition:.3s;
+    font-family:inherit;
+}
+
+.actions .delete{
+    background:#e74c3c;
+}
+
+.actions .delete:hover{
+    background:#c0392b;
+}
+
+.actions .complete{
+    background:#2ecc71;
+}
+
+.actions .complete:hover{
+    background:#27ae60;
+}
+
+.actions .edit{
+    display:inline-block;
+    background:#3498db;
+    color:#fff;
+    text-decoration:none;
+    padding:8px 14px;
+    border-radius:8px;
+    font-size:14px;
+    transition:.3s;
+}
+
+.actions .edit:hover{
+    background:#2980b9;
+}

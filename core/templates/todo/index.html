@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Todo {% endblock %}
+
+{% block content %}
+<body>
+
+<div class="container">
+
+    <div class="card">
+
+        <div class="card-header">
+
+            <h1>📝 My Todo List</h1>
+
+            <form method="post" action="{% url 'accounts:logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="logout-btn">
+                    Logout
+                </button>
+            </form>
+
+        </div>
+
+        <!-- Create Task -->
+        <form method="POST" action="{% url 'todo:create_task' %}" class="todo-form">
+            {% csrf_token %}
+
+            <input
+                type="text"
+                name="title"
+                placeholder="Enter task title"
+                required
+            >
+
+            <button type="submit">Add</button>
+        </form>
+
+        <!-- Todo List -->
+        <div class="todo-list">
+
+            {% for task in tasks %}
+
+            <div class="todo-item">
+
+                <div class="todo-left">
+
+                    {% if task.completed == True %}
+                        <span class="done">✔</span>
+                        <span class="completed">{{ task.title }}</span>
+                    {% else %}
+                        <span class="pending">○</span>
+                        <span>{{ task.title }}</span>
+                    {% endif %}
+
+                </div>
+
+                <div class="actions">
+
+                    {% if not task.completed %}
+                    <a href="{% url 'todo:complete_task' task.id %}" class="complete">
+                        Done
+                    </a>
+                    {% endif %}
+
+                    <a href="{% url 'todo:update_task' task.id %}" class="edit">
+                        Edit
+                    </a>
+                    
+                    <form method="post" action="{% url 'todo:delete_task' task.id %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="delete">
+                            Delete
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+
+            {% empty %}
+
+            <div class="empty">
+                No tasks yet 🎉
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
+{% endblock %}
