@@ -1,0 +1,64 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+</head>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+{% if messages %}
+    {% for message in messages %}
+        <script>
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: '{{ message.tags }}',
+                title: '{{ message }}',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true
+            });
+        </script>
+    {% endfor %}
+{% endif %}
+<body>
+
+<div class="register-container">
+
+    <div class="register-card">
+
+        <h1 class="register-title">
+            Create Account
+        </h1>
+
+        <form method="POST" class="register-form">
+
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            <button class="register-btn" type="submit">
+                Register
+            </button>
+
+        </form>
+
+        <p class="register-text">
+            Already have an account?
+
+            <a class="register-link" href="{% url 'accounts:login' %}">
+                Login
+            </a>
+        </p>
+
+    </div>
+
+</div>
+
+</body>
+</html>
