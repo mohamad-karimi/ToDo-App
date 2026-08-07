@@ -1,9 +1,10 @@
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.views import LoginView
 from django.views.generic.edit import FormView
 from django.urls import reverse_lazy
 from django.contrib.auth import login
 from django.shortcuts import redirect
+from .forms import RegisterForm
+from django.contrib.auth.forms import AuthenticationForm
 
 class UserLoginView(LoginView):
     """
@@ -14,7 +15,7 @@ class UserLoginView(LoginView):
     """
 
     template_name = "accounts/login.html"
-    fields = "username","password"
+    form_class = AuthenticationForm
     redirect_authenticated_user = True
 
     def get_success_url(self):
@@ -34,7 +35,7 @@ class Register(FormView):
     """
 
     template_name = "accounts/register.html"
-    form_class = UserCreationForm
+    form_class = RegisterForm
     success_url = reverse_lazy("todo:index")
     
     def form_valid(self, form):
