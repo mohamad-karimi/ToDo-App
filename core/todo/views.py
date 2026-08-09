@@ -21,7 +21,7 @@ class IndexView(LoginRequiredMixin, ListView):
         Returns only the todo items created by the logged-in user.
         """
                 
-        return Todo.objects.all()
+        return Todo.objects.filter(user=self.request.user)
 
 class TodoCreateView(LoginRequiredMixin, CreateView):
     """
@@ -79,6 +79,26 @@ class TodoComplete(LoginRequiredMixin, View):
                 
         object = Todo.objects.get(id=kwargs.get("pk"))
         object.completed = True
+        object.save()
+        return redirect(self.success_url)
+    
+class TodoNotComplete(LoginRequiredMixin, View):
+    """
+    Marks a todo task as NOt completed.
+
+    This view updates the completion status of a selected todo item.
+    """
+
+    model = Todo
+    success_url = reverse_lazy("todo:index")
+
+    def get(self, request, *args, **kwargs):
+        """
+        Finds the requested todo item and marks it as not completed.
+        """
+                
+        object = Todo.objects.get(id=kwargs.get("pk"))
+        object.completed = False
         object.save()
         return redirect(self.success_url)
     

@@ -388,12 +388,20 @@ h1{
     background:#c0392b;
 }
 
-.actions .complete{
-    background:#2ecc71;
+.actions .complete {
+    background: #2ecc71;
 }
 
-.actions .complete:hover{
-    background:#27ae60;
+.actions .complete:hover {
+    background: #27ae60;
+}
+
+.actions .undone {
+    background: #f39c12;
+}
+
+.actions .undone:hover {
+    background: #e67e22;
 }
 
 .actions .edit{

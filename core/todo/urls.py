@@ -9,4 +9,5 @@ urlpatterns = [
     path('edit/<int:pk>/', views.TodoEditView.as_view(), name='update_task'),
     path('delete/<int:pk>/', views.TodoDeleteView.as_view(), name='delete_task'),
     path('completed/<int:pk>/', views.TodoComplete.as_view(), name='complete_task'),
+    path('not-completed/<int:pk>/', views.TodoNotComplete.as_view(), name='not_complete_task'),
 ]

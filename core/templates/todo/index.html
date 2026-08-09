@@ -62,7 +62,12 @@
                     <a href="{% url 'todo:complete_task' task.id %}" class="complete">
                         Done
                     </a>
+                    {% else %}
+                    <a href="{% url 'todo:not_complete_task' task.id %}" class="undone">
+                        undone 
+                    </a>
                     {% endif %}
+
 
                     <a href="{% url 'todo:update_task' task.id %}" class="edit">
                         Edit
