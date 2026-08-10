@@ -1,7 +1,7 @@
 from django.views.generic import ListView, CreateView, UpdateView, View
 from .models import Todo
 from django.urls import reverse_lazy
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import redirect, get_object_or_404
 from .forms import TodoForm
 
@@ -43,7 +43,7 @@ class TodoCreateView(LoginRequiredMixin, CreateView):
         form.instance.user = self.request.user
         return super().form_valid(form)
     
-class TodoEditView(LoginRequiredMixin, UpdateView):
+class TodoEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     """
     Handles updating an existing todo task.
 
@@ -54,13 +54,13 @@ class TodoEditView(LoginRequiredMixin, UpdateView):
     form_class = TodoForm
     template_name = "todo/update.html"
     success_url = reverse_lazy("todo:index")
-
-    def get_queryset(self):
+    
+    def test_func(self):
         """
-        Limits the queryset to todos owned by the current user.
+        Shoe the 403 to user ask a task that wasnt for it
         """
-                
-        return Todo.objects.filter(user=self.request.user)
+        todo = self.get_object()
+        return todo.user == self.request.user
 
 class TodoComplete(LoginRequiredMixin, View):
     """
