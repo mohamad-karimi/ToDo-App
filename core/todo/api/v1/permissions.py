@@ -14,13 +14,13 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
 
         return obj.user == request.user
     
-class IsAdminOrReadOnly(permissions.BasePermission):
-    """
-    Only admin users can create posts.
-    """
+# class IsAdminOrReadOnly(permissions.BasePermission):
+#     """
+#     Only admin users can create posts.
+#     """
 
-    def has_permission(self, request, view):
-        if request.method == "POST":
-            return request.user.is_superuser
+#     def has_permission(self, request, view):
+#         if request.method == "POST":
+#             return request.user.is_superuser
 
-        return True
+#         return True
