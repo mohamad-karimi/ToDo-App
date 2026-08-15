@@ -5,12 +5,21 @@ from ...models import Todo
 User = get_user_model()
 
 class TasksFilter(filters.FilterSet):
+    '''
+    Create a custom filter class for filtering tasks
+    by user and completion status.
+    '''
+        
     user = filters.ModelMultipleChoiceFilter(
         field_name='user',
         queryset = User.objects.all()
     )
         
     class Meta():
+        '''
+        Set the model and define the fields available for filtering.
+        '''
+                
         model = Todo
         fields = [
             "user",
