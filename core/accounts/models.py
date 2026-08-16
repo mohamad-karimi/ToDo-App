@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from django.utils.translation import gettext_lazy as _
+
 
 # Create your models here.
 class CustomUserManager(BaseUserManager):
@@ -8,18 +10,19 @@ class CustomUserManager(BaseUserManager):
     Custom user model manager where username is the unique identifiers
     for authentication.
     """
+
     def create_user(self, username, email, password, **extra_fields):
         """
         Create and save a user with username and password
         """
         if not username:
             raise ValueError("Username is required")
-        
+
         if not email:
             raise ValueError("Email is required")
-        
+
         email = self.normalize_email(email)
-        
+
         user = self.model(username=username, email=email, **extra_fields)
         user.set_password(password)
         user.save()
@@ -38,14 +41,16 @@ class CustomUserManager(BaseUserManager):
             raise ValueError(_("Superuser must have is_staff=True."))
         if extra_fields.get("is_superuser") is not True:
             raise ValueError(_("Superuser must have is_superuser=True."))
-        
+
         return self.create_user(username, email, password, **extra_fields)
+
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     """
     Defines the custom user model and its fields.
     Users are created and managed by CustomUserManager.
     """
+
     username = models.CharField(max_length=150, unique=True)
     email = models.EmailField(null=True, unique=True)
     is_staff = models.BooleanField(default=False)

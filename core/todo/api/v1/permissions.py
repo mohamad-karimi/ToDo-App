@@ -1,5 +1,6 @@
 from rest_framework import permissions
 
+
 class IsOwnerOrReadOnly(permissions.BasePermission):
     """
     Object-level permission to only allow owners of an object to edit it.
@@ -13,7 +14,8 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
             return True
 
         return obj.user == request.user
-    
+
+
 # class IsAdminOrReadOnly(permissions.BasePermission):
 #     """
 #     Only admin users can create posts.

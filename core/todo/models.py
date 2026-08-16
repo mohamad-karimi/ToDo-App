@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
+
 # Create your models here.
 class Todo(models.Model):
     """
@@ -11,7 +12,7 @@ class Todo(models.Model):
     Each todo item belongs to a specific user and stores information
     about the task title, completion status, and timestamps.
     """
-        
+
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=120)
     completed = models.BooleanField(null=True, default=False)

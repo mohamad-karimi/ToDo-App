@@ -5,34 +5,29 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
+
 class CustomAuthTokenSerializer(serializers.Serializer):
-    '''
+    """
     Serializer for authenticating a user with email and password.
     Checks the user's credentials and email verification status.
-    '''
-        
-    username = serializers.CharField(
-        label=_("Username"),
-        write_only=True
-    )
+    """
+
+    username = serializers.CharField(label=_("Username"), write_only=True)
 
     password = serializers.CharField(
         label=_("Password"),
-        style={'input_type': 'password'},
+        style={"input_type": "password"},
         trim_whitespace=False,
-        write_only=True
+        write_only=True,
     )
 
-    token = serializers.CharField(
-        label=_("Token"),
-        read_only=True
-    )
+    token = serializers.CharField(label=_("Token"), read_only=True)
 
     def validate(self, attrs):
-        '''
+        """
         Authenticate the user using the provided username and password.
-        '''
-                
+        """
+
         username = attrs.get("username")
         password = attrs.get("password")
 
@@ -40,21 +35,15 @@ class CustomAuthTokenSerializer(serializers.Serializer):
             user = authenticate(
                 request=self.context.get("request"),
                 username=username,
-                password=password
+                password=password,
             )
 
             if not user:
                 msg = _("Unable to log in with provided credentials.")
-                raise serializers.ValidationError(
-                    msg,
-                    code="authorization"
-                )
+                raise serializers.ValidationError(msg, code="authorization")
         else:
             msg = _('Must include "username" and "password".')
-            raise serializers.ValidationError(
-                msg,
-                code="authorization"
-            )
+            raise serializers.ValidationError(msg, code="authorization")
 
         attrs["user"] = user
         return attrs

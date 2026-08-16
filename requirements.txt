@@ -1,22 +1,19 @@
-asgiref==3.12.1
-attrs==26.1.0
+# Django
 Django==5.2.14
-django-filter==26.1
-django-mail-templated==2.6.5
+
+# Django REST Framework
 djangorestframework==3.18.0
+django-filter==26.1
+
+# JWT Authentication
 djangorestframework_simplejwt==5.5.1
+
+# API Documentation
 drf-spectacular==0.30.0
 drf-spectacular-sidecar==2026.8.1
-inflection==0.5.1
-jsonschema==4.26.0
-jsonschema-specifications==2025.9.1
-Markdown==3.10.3
-packaging==26.2
-PyJWT==2.13.0
+
+# Email Templates
+django-mail-templated==2.6.5
+
+# Environment Variables
 python-decouple==3.8
-PyYAML==6.0.3
-referencing==0.37.0
-rpds-py==2026.6.3
-sqlparse==0.5.5
-typing_extensions==4.16.0
-uritemplate==4.2.0

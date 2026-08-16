@@ -1,4 +1,4 @@
-from ..serializers.jwt import *
+from ..serializers.jwt import CustomTokenObtainPairSerializer
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -7,13 +7,15 @@ from rest_framework_simplejwt.views import (
 
 from drf_spectacular.utils import extend_schema
 
+
 @extend_schema(tags=["jwt"])
 class CustomTokenObtainPairView(TokenObtainPairView):
-    '''
+    """
     Custom JWT token view that uses the custom token serializer.
-    '''
-        
+    """
+
     serializer_class = CustomTokenObtainPairSerializer
+
 
 @extend_schema(tags=["jwt"])
 class CustomTokenRefreshView(TokenRefreshView):
