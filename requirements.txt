@@ -2,6 +2,7 @@ asgiref==3.12.1
 attrs==26.1.0
 Django==5.2.14
 django-filter==26.1
+django-mail-templated==2.6.5
 djangorestframework==3.18.0
 djangorestframework_simplejwt==5.5.1
 drf-spectacular==0.30.0
@@ -15,7 +16,6 @@ PyJWT==2.13.0
 python-decouple==3.8
 PyYAML==6.0.3
 referencing==0.37.0
-rest-framework-simplejwt==0.0.2
 rpds-py==2026.6.3
 sqlparse==0.5.5
 typing_extensions==4.16.0

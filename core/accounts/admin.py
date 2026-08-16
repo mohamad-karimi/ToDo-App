@@ -13,12 +13,12 @@ class CustomUserAdmin(UserAdmin):
     add_form = CustomUserCreationForm
     form = CustomUserChangeForm
     model = User
-    list_display = ("username", "is_staff", "is_active", "is_superuser")
-    list_filter = ("is_staff", "is_active", "is_superuser")
+    list_display = ("username", "email", "is_staff", "is_active", "is_superuser", "is_verified")
+    list_filter = ("is_staff", "is_active", "is_superuser", "is_verified")
     readonly_fields = ("create_date", "update_date")
     fieldsets = (
-        ("Authentication", {"fields": ("username", "password")}),
-        ("Permissions", {"fields": ("is_staff", "is_active", "is_superuser")}),
+        ("Authentication", {"fields": ("username", "email", "password")}),
+        ("Permissions", {"fields": ("is_staff", "is_active", "is_superuser", "is_verified")}),
         ("Groups and Permissions", {"fields": ("groups", "user_permissions")}),
         ("Important Dates", {"fields": ("last_login",)}),
     )
@@ -26,11 +26,11 @@ class CustomUserAdmin(UserAdmin):
     add_fieldsets = (
         ("Authentication", {
             "classes": ("wide",),
-            "fields": ("username", "password1", "password2"),
+            "fields": ("username", "email", "password1", "password2"),
         }),
         ("Permissions", {
             "classes": ("wide",),
-            "fields": ("is_staff", "is_active", "is_superuser"),
+            "fields": ("is_staff", "is_active", "is_superuser", "is_verified"),
         }),
         ("Groups and Permissions", {
             "classes": ("wide",),

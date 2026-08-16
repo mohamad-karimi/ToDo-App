@@ -21,6 +21,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
         model = User
         fields = [
             "username",
+            "email",
             "password",
             "password2",
         ]
@@ -84,4 +85,32 @@ class PasswordChangeSerializer(serializers.Serializer):
                 "new_password2": "Passwords do not match."
             })
 
+        return attrs
+    
+class ActivationResendSerializer(serializers.Serializer):
+    """
+    Serializer for requesting a new email activation link.
+    Checks that the user exists and has not already verified their email.
+    """
+
+    email = serializers.EmailField(required=True)
+
+    def validate(self, attrs):
+        """
+        Validate the user's email and check their verification status.
+        """
+
+        try:
+            user = User.objects.get(email=attrs["email"])
+        except User.DoesNotExist:
+            raise serializers.ValidationError(
+                {"email": "User with this email does not exist."}
+            )
+
+        if user.is_verified:
+            raise serializers.ValidationError(
+                {"email": "Email is already verified."}
+            )
+
+        attrs["user"] = user
         return attrs

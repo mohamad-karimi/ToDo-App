@@ -7,7 +7,7 @@ User = get_user_model()
 class RegisterForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ("username",)
+        fields = ("username", "email")
     
 # class LoginForm(AuthenticationForm):
 #     """
@@ -38,9 +38,11 @@ class CustomUserCreationForm(forms.ModelForm):
         model = User
         fields = (
             "username",
+            "email",
             "is_staff",
             "is_active",
             "is_superuser",
+            "is_verified",
             "groups",
             "user_permissions",
         )
@@ -85,10 +87,12 @@ class CustomUserChangeForm(forms.ModelForm):
         model = User
         fields = (
             "username",
+            "email",
             "password",
             "is_active",
             "is_staff",
             "is_superuser",
+            "is_verified",
             "groups",
             "user_permissions",
             "last_login",
