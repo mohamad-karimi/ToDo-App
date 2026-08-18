@@ -17,3 +17,7 @@ django-mail-templated==2.6.5
 
 # Environment Variables
 python-decouple==3.8
+
+# Pytest
+pytest
+pytest-django
