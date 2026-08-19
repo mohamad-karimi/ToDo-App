@@ -1,0 +1,43 @@
+name: Django-Website-advance
+
+on:
+  push:
+    branches: ["main"]
+
+  pull_request:
+    branches: ["main"]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Create .env
+        run: |
+          echo "DEBUG=${{ secrets.DEBUG }}" >> .env
+          echo "EMAIL_HOST_PASSWORD=${{ secrets.EMAIL_HOST_PASSWORD }}" >> .env
+          echo "EMAIL_HOST_USER=${{ secrets.EMAIL_HOST_USER }}" >> .env
+          echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
+    
+      - name: Start Docker Compose
+        run: docker compose up -d --build
+      
+      - name: Debug Docker
+        run: |
+          docker compose ps
+          docker compose exec -T backend python --version
+          docker compose exec -T backend pip --version
+          docker compose exec -T backend pip show pytest
+          docker compose exec -T backend pip show flake8
+        
+      - name: Run tests and flake8
+        run: docker exec todoapp-backend sh -c "pytest && flake8"
+
+      - name: Django check
+        run: docker exec todoapp-backend sh -c "python manage.py check"
