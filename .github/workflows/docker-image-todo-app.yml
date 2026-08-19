@@ -1,4 +1,4 @@
-name: Django-Website-advance
+name: Todo-app
 
 on:
   push:
