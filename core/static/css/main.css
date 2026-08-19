@@ -172,6 +172,24 @@ body{
     margin-bottom:10px;
 }
 
+.Forgotten-password {
+    display: block;
+    margin-top: 12px;
+
+    color: #4f46e5;
+    font-size: 14px;
+    font-weight: 500;
+
+    text-align: center;
+    text-decoration: none;
+
+    transition: color 0.2s ease;
+}
+
+.Forgotten-password:hover {
+    color: #3730a3;
+    text-decoration: underline;
+}
 /* ------------- todo app ------------- */
 *{
     margin:0;
@@ -417,4 +435,239 @@ h1{
 
 .actions .edit:hover{
     background:#2980b9;
+}
+
+/* ---------------- reset password ------------ */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-family: Arial, sans-serif;
+
+    background: #f4f6f8;
+}
+
+.reset-container {
+    width: 100%;
+    max-width: 420px;
+
+    padding: 20px;
+}
+
+.reset-card {
+    background: #ffffff;
+
+    padding: 35px;
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.reset-card h1 {
+    margin-top: 0;
+
+    margin-bottom: 10px;
+
+    font-size: 28px;
+
+    text-align: center;
+}
+
+.reset-card p {
+    color: #666;
+
+    line-height: 1.6;
+
+    text-align: center;
+
+    margin-bottom: 25px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-weight: 600;
+}
+
+.form-group input {
+    width: 100%;
+
+    padding: 12px 14px;
+
+    border: 1px solid #ddd;
+
+    border-radius: 8px;
+
+    font-size: 15px;
+
+    outline: none;
+}
+
+.form-group input:focus {
+    border-color: #4f46e5;
+}
+
+button {
+    width: 100%;
+
+    padding: 13px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: #4f46e5;
+
+    color: white;
+
+    font-size: 16px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+button:hover {
+    background: #4338ca;
+}
+
+.error {
+    padding: 12px;
+
+    margin-bottom: 20px;
+
+    border-radius: 8px;
+
+    background: #fee2e2;
+
+    color: #b91c1c;
+
+    font-size: 14px;
+}
+
+.success-card {
+    text-align: center;
+}
+
+.success-icon {
+    width: 60px;
+    height: 60px;
+
+    margin: 0 auto 20px;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 50%;
+
+    background: #dcfce7;
+
+    color: #16a34a;
+
+    font-size: 32px;
+
+    font-weight: bold;
+}
+
+.login-button {
+    display: block;
+
+    padding: 13px;
+
+    border-radius: 8px;
+
+    background: #4f46e5;
+
+    color: white;
+
+    text-decoration: none;
+
+    font-weight: 600;
+}
+
+.login-button:hover {
+    background: #4338ca;
+}
+
+.success-card {
+    text-align: center;
+}
+
+.success-icon {
+    width: 64px;
+    height: 64px;
+
+    margin: 0 auto 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #dcfce7;
+    color: #16a34a;
+
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.success-card h1 {
+    margin-bottom: 12px;
+}
+
+.success-card p {
+    line-height: 1.7;
+    color: #555;
+}
+
+.success-card .secondary-text {
+    font-size: 14px;
+    color: #888;
+
+    margin-top: 8px;
+    margin-bottom: 25px;
+}
+
+.login-button {
+    display: block;
+
+    width: 100%;
+
+    padding: 13px;
+
+    border-radius: 8px;
+
+    background: #4f46e5;
+    color: #fff;
+
+    font-size: 16px;
+    font-weight: 600;
+
+    text-align: center;
+    text-decoration: none;
+
+    transition: background 0.2s ease;
+}
+
+.login-button:hover {
+    background: #4338ca;
 }
