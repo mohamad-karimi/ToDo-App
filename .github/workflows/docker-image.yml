@@ -27,7 +27,10 @@ jobs:
     
       - name: Start Docker Compose
         run: docker compose up -d --build
-
+      
+      - name: Check installed tools
+        run: docker compose exec -T backend sh -c "which pytest && pytest --version && flake8 --version"
+        
       - name: Run tests and flake8
         run: docker exec todoapp-backend sh -c "pytest && flake8"
 
