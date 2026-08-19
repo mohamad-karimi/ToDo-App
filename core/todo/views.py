@@ -1,5 +1,5 @@
 from django.views.generic import ListView, CreateView, UpdateView, View
-from .models import Todo
+from .models import Tasks
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import redirect, get_object_or_404
@@ -22,7 +22,7 @@ class IndexView(LoginRequiredMixin, ListView):
         Returns only the todo items created by the logged-in user.
         """
 
-        return Todo.objects.filter(user=self.request.user)
+        return Tasks.objects.filter(user=self.request.user)
 
 
 class TodoCreateView(LoginRequiredMixin, CreateView):
@@ -33,7 +33,7 @@ class TodoCreateView(LoginRequiredMixin, CreateView):
     to the currently authenticated user.
     """
 
-    model = Todo
+    model = Tasks
     form_class = TodoForm
     success_url = reverse_lazy("todo:index")
 
@@ -53,7 +53,7 @@ class TodoEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     Users can only edit their own todo items.
     """
 
-    model = Todo
+    model = Tasks
     form_class = TodoForm
     template_name = "todo/update.html"
     success_url = reverse_lazy("todo:index")
@@ -73,7 +73,7 @@ class TodoComplete(LoginRequiredMixin, View):
     This view updates the completion status of a selected todo item.
     """
 
-    model = Todo
+    model = Tasks
     success_url = reverse_lazy("todo:index")
 
     def get(self, request, *args, **kwargs):
@@ -81,7 +81,7 @@ class TodoComplete(LoginRequiredMixin, View):
         Finds the requested todo item and marks it as completed.
         """
 
-        object = Todo.objects.get(id=kwargs.get("pk"))
+        object = Tasks.objects.get(id=kwargs.get("pk"))
         object.completed = True
         object.save()
         return redirect(self.success_url)
@@ -94,7 +94,7 @@ class TodoNotComplete(LoginRequiredMixin, View):
     This view updates the completion status of a selected todo item.
     """
 
-    model = Todo
+    model = Tasks
     success_url = reverse_lazy("todo:index")
 
     def get(self, request, *args, **kwargs):
@@ -102,7 +102,7 @@ class TodoNotComplete(LoginRequiredMixin, View):
         Finds the requested todo item and marks it as not completed.
         """
 
-        object = Todo.objects.get(id=kwargs.get("pk"))
+        object = Tasks.objects.get(id=kwargs.get("pk"))
         object.completed = False
         object.save()
         return redirect(self.success_url)
@@ -121,7 +121,9 @@ class TodoDeleteView(LoginRequiredMixin, View):
         Deletes the selected todo item and redirects back to the index page.
         """
 
-        todo = get_object_or_404(Todo, pk=kwargs.get("pk"), user=request.user)
+        todo = get_object_or_404(
+            Tasks, pk=kwargs.get("pk"), user=request.user
+        )
 
         todo.delete()
 

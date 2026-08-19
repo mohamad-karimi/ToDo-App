@@ -2,7 +2,7 @@ import pytest
 from rest_framework.test import APIClient
 from django.urls import reverse
 from django.contrib.auth import get_user_model
-from todo.models import Todo
+from todo.models import Tasks
 from django.contrib.auth.models import Permission
 
 User = get_user_model()
@@ -11,9 +11,7 @@ User = get_user_model()
 @pytest.fixture
 def common_user():
     user = User.objects.create_user(
-        username="test",
-        email="test@gmail.com",
-        password="@1234567"
+        username="test", email="test@gmail.com", password="@1234567"
     )
     return user
 
@@ -31,11 +29,13 @@ def user_permission(common_user):
 
 
 @pytest.mark.django_db
-class TestPostApi():
+class TestPostApi:
     client = APIClient()
 
     def test_get_post_api_response_status_401(self):
-        url = reverse("todo:api-v1:task-list",)
+        url = reverse(
+            "todo:api-v1:task-list",
+        )
         response = self.client.get(url)
 
         assert response.status_code == 401
@@ -43,9 +43,7 @@ class TestPostApi():
     def test_create_post_response_status_401(self):
         url = reverse("todo:api-v1:task-list")
 
-        data = {
-            "title": "pytest"
-        }
+        data = {"title": "pytest"}
 
         response = self.client.post(url, data)
 
@@ -54,7 +52,9 @@ class TestPostApi():
     def test_get_post_api_response_status_200(self, common_user):
         user = common_user
         self.client.force_authenticate(user=user)
-        url = reverse("todo:api-v1:task-list",)
+        url = reverse(
+            "todo:api-v1:task-list",
+        )
         response = self.client.get(url)
 
         assert response.status_code == 200
@@ -63,9 +63,7 @@ class TestPostApi():
         user = common_user
         self.client.force_authenticate(user=user)
         url = reverse("todo:api-v1:task-list")
-        data = {
-            "title": "pytest2"
-        }
+        data = {"title": "pytest2"}
 
         response = self.client.post(url, data)
 
@@ -74,9 +72,7 @@ class TestPostApi():
     def test_create_post_invalid_data_response_status_400(self):
         url = reverse("todo:api-v1:task-list")
 
-        data = {
-            "title": ""
-        }
+        data = {"title": ""}
 
         response = self.client.post(url, data)
 
@@ -85,7 +81,7 @@ class TestPostApi():
     def test_put_post_response_status_200(self, common_user):
         self.client.force_authenticate(user=common_user)
 
-        todo = Todo.objects.create(
+        todo = Tasks.objects.create(
             user=common_user,
             title="test",
         )
@@ -106,7 +102,7 @@ class TestPostApi():
     def test_put_post_response_status_400(self, common_user):
         self.client.force_authenticate(user=common_user)
 
-        todo = Todo.objects.create(
+        todo = Tasks.objects.create(
             user=common_user,
             title="test",
         )
@@ -127,7 +123,7 @@ class TestPostApi():
     def test_delete_post_response_status_200(self, common_user):
         self.client.force_authenticate(user=common_user)
 
-        todo = Todo.objects.create(
+        todo = Tasks.objects.create(
             user=common_user,
             title="test",
         )

@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from .serializers import TaskSerializer
-from ...models import Todo
+from ...models import Tasks
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from .filters import TasksFilter
@@ -29,7 +29,7 @@ class TaskModelViewSet(viewsets.ModelViewSet):
         Return only the tasks that belong to the authenticated user.
         """
 
-        return Todo.objects.filter(user=self.request.user)
+        return Tasks.objects.filter(user=self.request.user)
 
     def perform_create(self, serializer):
         """

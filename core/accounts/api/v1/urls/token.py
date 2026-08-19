@@ -1,8 +1,5 @@
 from django.urls import path
-from ..views.token import (
-    CustomObtainAuthToken,
-    CustomDestroyAuthToken
-)
+from ..views.token import CustomObtainAuthToken, CustomDestroyAuthToken
 
 app_name = "token"
 

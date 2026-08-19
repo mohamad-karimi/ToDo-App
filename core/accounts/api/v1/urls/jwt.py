@@ -2,7 +2,7 @@ from django.urls import path
 from ..views.jwt import (
     CustomTokenRefreshView,
     CustomTokenObtainPairView,
-    CustomTokenVerifyView
+    CustomTokenVerifyView,
 )
 
 app_name = "jwt"

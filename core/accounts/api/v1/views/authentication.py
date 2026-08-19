@@ -8,7 +8,7 @@ from ..serializers.authentication import (
     PasswordChangeSerializer,
     ActivationResendSerializer,
     PasswordResetRequestSerializer,
-    PasswordResetTokenSerializer
+    PasswordResetTokenSerializer,
 )
 from rest_framework.views import APIView
 from mail_templated import EmailMessage
@@ -212,6 +212,7 @@ class PasswordResetView(GenericAPIView):
     Receives the user's email address, generates a secure password
     reset token, creates the reset URL, and sends it to the user.
     """
+
     serializer_class = PasswordResetRequestSerializer
     permission_classes = [AllowAny]
 
@@ -269,6 +270,7 @@ class PasswordResetTokenView(GenericAPIView):
     validates the submitted password data, and updates the
     user's password.
     """
+
     serializer_class = PasswordResetTokenSerializer
     permission_classes = [AllowAny]
 

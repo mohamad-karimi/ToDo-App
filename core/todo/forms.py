@@ -1,5 +1,5 @@
 from django import forms
-from .models import Todo
+from .models import Tasks
 
 
 class TodoForm(forms.ModelForm):
@@ -11,5 +11,5 @@ class TodoForm(forms.ModelForm):
     """
 
     class Meta:
-        model = Todo
+        model = Tasks
         fields = ("title",)
