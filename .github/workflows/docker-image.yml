@@ -29,7 +29,7 @@ jobs:
         run: docker compose up -d
 
       - name: Run tests and flake8
-        run: docker exec backend sh -c "pytest && flake8"
+        run: docker exec todoapp-backend sh -c "pytest && flake8"
 
       - name: Django check
-        run: docker exec backend sh -c "python manage.py check"
+        run: docker exec todoapp-backend sh -c "python manage.py check"
