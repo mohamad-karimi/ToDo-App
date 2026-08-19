@@ -1,0 +1,28 @@
+name: Django-Website-advance
+
+on:
+  push:
+    branches: ["main"]
+
+  pull_request:
+    branches: ["main"]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Start Docker Compose
+        run: docker compose up -d
+
+      - name: Run tests and flake8
+        run: docker exec backend sh -c "pytest && flake8"
+
+      - name: Django check
+        run: docker exec backend sh -c "python manage.py check"
