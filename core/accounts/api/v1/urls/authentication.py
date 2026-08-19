@@ -5,7 +5,7 @@ from ..views.authentication import (
     PasswordResetView,
     PasswordResetTokenView,
     ActivationConfirmApiView,
-    ActivationResendApiView
+    ActivationResendApiView,
 )
 
 app_name = "authentication"

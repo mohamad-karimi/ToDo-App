@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from ...models import Todo
+from ...models import Tasks
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 
@@ -14,7 +14,7 @@ class TaskSerializer(serializers.ModelSerializer):
     absolute_url = serializers.SerializerMethodField()
 
     class Meta:
-        model = Todo
+        model = Tasks
         fields = [
             "id",
             "user",

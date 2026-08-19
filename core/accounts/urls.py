@@ -5,7 +5,7 @@ from .views import (
     PasswordResetSendEmailView,
     PasswordResetSentView,
     PasswordResetView,
-    PasswordResetConfirmView
+    PasswordResetConfirmView,
 )
 from django.contrib.auth.views import LogoutView
 

@@ -5,7 +5,7 @@ User = get_user_model()
 
 
 # Create your models here.
-class Todo(models.Model):
+class Tasks(models.Model):
     """
     Represents a user's todo task.
 

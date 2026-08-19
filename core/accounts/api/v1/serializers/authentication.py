@@ -117,6 +117,7 @@ class PasswordResetRequestSerializer(serializers.Serializer):
     Validates that the submitted email address belongs to
     an existing user account.
     """
+
     email = serializers.EmailField()
 
     def validate_email(self, value):
@@ -146,6 +147,7 @@ class PasswordResetTokenSerializer(serializers.Serializer):
     Serializer for validating a password reset token and
     setting a new password for the associated user.
     """
+
     new_password = serializers.CharField(write_only=True, min_length=8)
 
     def validate(self, attrs):

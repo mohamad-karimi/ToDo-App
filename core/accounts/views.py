@@ -83,6 +83,7 @@ class PasswordResetSentView(TemplateView):
     Display a page informing the user that the password reset
     email has been sent successfully.
     """
+
     template_name = "accounts/password_reset_sent.html"
 
 
@@ -93,6 +94,7 @@ class PasswordResetSendEmailView(View):
     Displays a form where the user enters their email address,
     generates a password reset token, and sends the reset link.
     """
+
     template_name = "accounts/password_reset_send_email.html"
 
     def get(self, request):
@@ -157,6 +159,7 @@ class PasswordResetView(View):
     Validates the encoded user ID and reset token before allowing
     the user to set a new password.
     """
+
     template_name = "accounts/password_reset.html"
 
     def get(self, request, uid, token):
@@ -258,4 +261,5 @@ class PasswordResetConfirmView(TemplateView):
     """
     Display the password reset completion page.
     """
+
     template_name = "accounts/password_reset_confirm.html"
