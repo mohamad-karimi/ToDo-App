@@ -10,8 +10,13 @@ User = get_user_model()
 
 @pytest.fixture
 def common_user():
-    user = User.objects.create_user(username="test", email="test@gmail.com", password="@1234567")
+    user = User.objects.create_user(
+        username="test",
+        email="test@gmail.com",
+        password="@1234567"
+    )
     return user
+
 
 @pytest.fixture
 def user_permission(common_user):
@@ -23,6 +28,7 @@ def user_permission(common_user):
     create_user = common_user.user_permissions.add(permission)
 
     return create_user
+
 
 @pytest.mark.django_db
 class TestPostApi():
@@ -118,7 +124,6 @@ class TestPostApi():
 
         assert response.status_code == 400
 
-
     def test_delete_post_response_status_200(self, common_user):
         self.client.force_authenticate(user=common_user)
 
@@ -133,5 +138,4 @@ class TestPostApi():
         )
 
         response = self.client.delete(url)
-
         assert response.status_code == 204

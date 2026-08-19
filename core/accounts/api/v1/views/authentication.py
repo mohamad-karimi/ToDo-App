@@ -212,7 +212,6 @@ class PasswordResetView(GenericAPIView):
     Receives the user's email address, generates a secure password
     reset token, creates the reset URL, and sends it to the user.
     """
-        
     serializer_class = PasswordResetRequestSerializer
     permission_classes = [AllowAny]
 
@@ -223,7 +222,6 @@ class PasswordResetView(GenericAPIView):
         Validates the submitted email address, generates a password
         reset token, creates the reset URL, and sends the reset email.
         """
-                
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
@@ -271,7 +269,6 @@ class PasswordResetTokenView(GenericAPIView):
     validates the submitted password data, and updates the
     user's password.
     """
-        
     serializer_class = PasswordResetTokenSerializer
     permission_classes = [AllowAny]
 
@@ -282,7 +279,6 @@ class PasswordResetTokenView(GenericAPIView):
         The UID and token are passed to the serializer through
         the serializer context for validation.
         """
-                
         serializer = self.get_serializer(
             data=request.data,
             context={

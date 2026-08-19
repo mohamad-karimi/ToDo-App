@@ -117,7 +117,6 @@ class PasswordResetRequestSerializer(serializers.Serializer):
     Validates that the submitted email address belongs to
     an existing user account.
     """
-        
     email = serializers.EmailField()
 
     def validate_email(self, value):
@@ -134,7 +133,6 @@ class PasswordResetRequestSerializer(serializers.Serializer):
             serializers.ValidationError:
                 If no user exists with the submitted email address.
         """
-                
         if not User.objects.filter(email=value).exists():
             raise serializers.ValidationError(
                 "The user with that email address does not exist."
@@ -148,7 +146,6 @@ class PasswordResetTokenSerializer(serializers.Serializer):
     Serializer for validating a password reset token and
     setting a new password for the associated user.
     """
-        
     new_password = serializers.CharField(write_only=True, min_length=8)
 
     def validate(self, attrs):
@@ -168,10 +165,8 @@ class PasswordResetTokenSerializer(serializers.Serializer):
             serializers.ValidationError:
                 If the reset link is invalid or the token is expired.
         """
-                
         uid = self.context["uid"]
         token = self.context["token"]
-
         try:
             uid = urlsafe_base64_decode(uid).decode()
             user = User.objects.get(pk=uid)
@@ -193,11 +188,8 @@ class PasswordResetTokenSerializer(serializers.Serializer):
         Returns:
             The updated user instance.
         """
-                
         user = self.validated_data["user"]
-
         user.set_password(self.validated_data["new_password"])
-
         user.save()
 
         return user
