@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-
     # Third-party
     "rest_framework",
     "django_filters",
@@ -53,7 +52,6 @@ INSTALLED_APPS = [
     "rest_framework.authtoken",
     "mail_templated",
     "django_celery_beat",
-
     # My apps
     "accounts",
     "todo",
