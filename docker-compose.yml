@@ -34,6 +34,18 @@ services:
       - redis
       - backend
 
+  beat:
+    build: .
+    container_name: todoapp-beat
+    command: celery -A core beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    env_file:
+      - .env
+    volumes:
+      - ./core:/app
+    depends_on:
+      - redis
+      - backend
+
   smtp4dev:
     image: rnwood/smtp4dev:v3
     restart: on-failure
