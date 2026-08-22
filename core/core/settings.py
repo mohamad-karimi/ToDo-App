@@ -221,3 +221,14 @@ SERVER_EMAIL = EMAIL_HOST_USER
 
 # celery setting
 CELERY_BROKER_URL = "redis://todoapp-redis:6379/1"
+
+# Cache config
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://todoapp-redis:6379/2",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.HerdClient",
+        },
+    }
+}
