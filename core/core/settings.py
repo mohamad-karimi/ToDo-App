@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "drf_spectacular_sidecar",
     "rest_framework.authtoken",
     "mail_templated",
+    "django_celery_beat",
     # My apps
     "accounts",
     "todo",
@@ -217,3 +218,6 @@ EMAIL_USE_SSL = False
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 SERVER_EMAIL = EMAIL_HOST_USER
+
+# celery setting
+CELERY_BROKER_URL = "redis://todoapp-redis:6379/1"

@@ -1,4 +1,12 @@
 services:
+  redis:
+    container_name: todoapp-redis
+    image: redis
+    restart: on-failure
+    ports:
+      - "6379:6379"
+    command: redis-server --save 60 1 --loglevel warning
+
   backend:
     build: .
     container_name: todoapp-backend
@@ -11,6 +19,32 @@ services:
     volumes:
       - ./core:/app
     command: python manage.py runserver 0.0.0.0:8000
+    depends_on:
+      - redis
+
+  worker:
+    build: .
+    container_name: todoapp-worker
+    command: celery -A core worker -l INFO
+    env_file:
+      - .env
+    volumes:
+      - ./core:/app
+    depends_on:
+      - redis
+      - backend
+
+  beat:
+    build: .
+    container_name: todoapp-beat
+    command: celery -A core beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    env_file:
+      - .env
+    volumes:
+      - ./core:/app
+    depends_on:
+      - redis
+      - backend
 
   smtp4dev:
     image: rnwood/smtp4dev:v3
