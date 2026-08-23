@@ -671,3 +671,59 @@ button:hover {
 .login-button:hover {
     background: #4338ca;
 }
+
+/* ------------- weather --------------------- */
+.weather-card {
+    width: 320px;
+    padding: 20px;
+    margin: 20px;
+
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+
+    text-align: center;
+    direction: rtl;
+    font-family: Arial, sans-serif;
+
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    box-sizing: border-box;
+}
+
+.weather-card h3 {
+    margin: 0 0 20px;
+    font-size: 22px;
+    color: #333;
+}
+
+.weather-card p {
+    margin: 12px 0;
+    padding: 10px;
+    background: #f5f7fa;
+    border-radius: 10px;
+    font-size: 16px;
+    color: #444;
+}
+
+.weather-card span {
+    font-weight: bold;
+    color: #222;
+}
+
+#temperature {
+    color: #e67e22;
+}
+
+#humidity {
+    color: #3498db;
+}
+
+#wind-speed {
+    color: #27ae60;
+}
+
+#weather-status {
+    color: #8e44ad;
+}

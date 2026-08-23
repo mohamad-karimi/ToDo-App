@@ -1,7 +1,7 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fa">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,6 +10,65 @@
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
 </head>
 
-{%block content%}
+<body>
 
-{% endblock %}
+    <div class="weather-card">
+        <h3>آب و هوای کرج</h3>
+
+        <p>
+            🌡️ دما:
+            <span id="temperature">-</span>
+            °C
+        </p>
+
+        <p>
+            💧 رطوبت:
+            <span id="humidity">-</span>%
+        </p>
+
+        <p>
+            💨 سرعت باد:
+            <span id="wind-speed">-</span>
+            km/h
+        </p>
+
+        <p>
+            وضعیت:
+            <span id="weather-status">در حال دریافت...</span>
+        </p>
+    </div>
+
+    {% block content %}
+    {% endblock %}
+
+    <script>
+        fetch("/api/v1/weather/")
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById("temperature").textContent =
+                    data.temperature;
+
+                document.getElementById("humidity").textContent =
+                    data.humidity;
+
+                document.getElementById("wind-speed").textContent =
+                    data.wind_speed;
+
+                document.getElementById("weather-status").textContent =
+                    data.weather_code;
+            })
+            .catch(error => {
+                console.error(error);
+                document.getElementById("weather-status").textContent =
+                    "خطا";
+            });
+    </script>
+
+</body>
+</html>
