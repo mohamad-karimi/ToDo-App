@@ -15,7 +15,9 @@ from django.contrib.auth import get_user_model
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
 from django.views.generic import TemplateView
-from mail_templated import EmailMessage
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 
 User = get_user_model()
 
@@ -136,16 +138,22 @@ class PasswordResetSendEmailView(View):
             )
         )
 
-        message = EmailMessage(
-            "email/password_reset_email.tpl",
+        html_content = render_to_string(
+            "email/password_reset_email.html",
             {
                 "username": user.username,
                 "user_email": user.email,
                 "reset_url": reset_url,
             },
+        )
+
+        message = EmailMultiAlternatives(
+            subject="Reset Password",
+            body=strip_tags(html_content),
             from_email=settings.DEFAULT_FROM_EMAIL,
             to=[user.email],
         )
+        message.attach_alternative(html_content, "text/html")
 
         message.send()
 

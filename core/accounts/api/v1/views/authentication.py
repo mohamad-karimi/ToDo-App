@@ -11,14 +11,15 @@ from ..serializers.authentication import (
     PasswordResetTokenSerializer,
 )
 from rest_framework.views import APIView
-from mail_templated import EmailMessage
 from ...utility import EmailThreading
 from django.conf import settings
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
 from rest_framework_simplejwt.exceptions import TokenError
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
-from django.core.mail import send_mail
+from django.core.mail import EmailMultiAlternatives, send_mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 from rest_framework.permissions import AllowAny
 from django.contrib.auth import get_user_model
 from django.contrib.auth.tokens import default_token_generator
@@ -51,16 +52,21 @@ class RegistrationApiView(GenericAPIView):
             token = RefreshToken.for_user(user)
             token["type"] = "email_verification"
 
-            email = EmailMessage(
-                "email/email_verified.tpl",
+            html_content = render_to_string(
+                "email/email_verified.html",
                 {
                     "username": username,
                     "user_email": user_email,
                     "token": str(token.access_token),
                 },
-                settings.DEFAULT_FROM_EMAIL,
+            )
+            email = EmailMultiAlternatives(
+                subject="Email Verification",
+                body=strip_tags(html_content),
+                from_email=settings.DEFAULT_FROM_EMAIL,
                 to=[user_email],
             )
+            email.attach_alternative(html_content, "text/html")
             EmailThreading(email).start()
 
             detail = {
@@ -187,12 +193,17 @@ class ActivationResendApiView(GenericAPIView):
             token = RefreshToken.for_user(user)
             token["type"] = "email_verification"
 
-            email = EmailMessage(
-                "email/email_verified.tpl",
+            html_content = render_to_string(
+                "email/email_verified.html",
                 {"token": str(token.access_token)},
-                settings.DEFAULT_FROM_EMAIL,
+            )
+            email = EmailMultiAlternatives(
+                subject="Email Verification",
+                body=strip_tags(html_content),
+                from_email=settings.DEFAULT_FROM_EMAIL,
                 to=[user_email],
             )
+            email.attach_alternative(html_content, "text/html")
 
             EmailThreading(email).start()
 
