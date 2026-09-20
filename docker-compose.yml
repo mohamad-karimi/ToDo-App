@@ -17,6 +17,7 @@ services:
   backend:
     build: .
     container_name: todoapp-backend
+    working_dir: /app
 
     env_file:
       - .env
@@ -37,6 +38,7 @@ services:
   worker:
     build: .
     container_name: todoapp-worker
+    working_dir: /app
     command: celery -A core worker -l INFO
     env_file:
       - .env
@@ -49,6 +51,7 @@ services:
   beat:
     build: .
     container_name: todoapp-beat
+    working_dir: /app
     command: celery -A core beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler
     env_file:
       - .env
