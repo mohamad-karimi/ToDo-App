@@ -12,7 +12,11 @@ RUN pip install --upgrade pip && \
 
 COPY . .
 
+WORKDIR /app/core
+
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
+
+CMD ["sh", "-c", "gunicorn core.wsgi --bind 0.0.0.0:${PORT:-8000}"]
