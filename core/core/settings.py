@@ -108,8 +108,8 @@ else:
             "NAME": config("POSTGRES_DB"),
             "USER": config("POSTGRES_USER"),
             "PASSWORD": config("POSTGRES_PASSWORD"),
-            "HOST": "postgres",
-            "PORT": "5432",
+            "HOST": config("POSTGRES_HOST", default="postgres"),
+            "PORT": config("POSTGRES_PORT", default="5432"),
         }
     }
 
