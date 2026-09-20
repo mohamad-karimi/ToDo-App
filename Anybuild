@@ -1,33 +1,55 @@
 load("//anybuild/tools:python.bzl", "python_build", "python_config", "python_serve")
 
 config = python_config(
-    schema = 1,
-    # WASIX wheels (PyYAML, rpds-py, ...) exist only for CPython 3.13/3.14.
-    python_version = "3.13",
-    commands = {
-        "start": "cd core && python manage.py migrate --noinput && gunicorn core.wsgi:application --bind 0.0.0.0:8080",
-    },
+schema = 1,
+
+```
+# WASIX wheels (PyYAML, rpds-py, ...) exist for CPython 3.13.
+python_version = "3.13",
+
+commands = {
+    "start": "gunicorn core.wsgi:application --bind 0.0.0.0:$PORT",
+},
+```
+
 )
 
 build = python_build(config)
 
 python_serve(
-    config,
-    build,
-    name = "todo-app",
-    build_pre = [
-        copy("requirements.txt"),
-    ],
-    build_post = [
-        # The placeholders only let settings.py import during the build; real
-        # secrets (SECRET_KEY, EMAIL_*) must be set in the Wasmer environment.
-        run(
-            "cd core && SECRET_KEY=build-only EMAIL_HOST_USER=build-only EMAIL_HOST_PASSWORD=build-only python manage.py collectstatic --noinput",
-            group = "build",
-        ),
-    ],
-    extra_env = {
-        "WASMER": "true",
-        "DEBUG": "False",
-    },
+config,
+build,
+name = "todo-app",
+
+```
+# The Django project is inside /core.
+cwd = "core",
+
+build_pre = [
+    copy("requirements.txt"),
+],
+
+build_post = [
+    # Only needed during build so settings.py can load.
+    # Real secrets come from Wasmer environment variables.
+    run(
+        "SECRET_KEY=build-only EMAIL_HOST_USER=build-only EMAIL_HOST_PASSWORD=build-only python manage.py collectstatic --noinput",
+        group = "build",
+    ),
+],
+
+# Run migrations once after build and before starting Gunicorn.
+prepare = [
+    run(
+        "python manage.py migrate --noinput",
+        group = "prepare",
+    ),
+],
+
+extra_env = {
+    "WASMER": "true",
+    "DEBUG": "False",
+},
+```
+
 )
