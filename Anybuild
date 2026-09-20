@@ -1,0 +1,20 @@
+load("//anybuild/tools:python.bzl", "python_build", "python_config", "python_serve")
+
+config = python_config(
+    schema = 1,
+    python_version = "3.11",
+    commands = {
+        "start": "gunicorn core.wsgi:application --bind 0.0.0.0:$PORT",
+    },
+)
+
+build = python_build(config)
+
+python_serve(
+    config,
+    build,
+    name = "todo-app",
+    build_pre = [
+        copy("requirements.txt"),
+    ],
+)
