@@ -41,3 +41,4 @@ requests
 
 # Deployment
 gunicorn
+uvicorn
