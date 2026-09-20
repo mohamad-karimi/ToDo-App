@@ -1,37 +1,41 @@
 load("//anybuild/tools:python.bzl", "python_build", "python_config", "python_serve")
 
 config = python_config(
-schema = 1,
-python_version = "3.13",
-commands = {
-"start": "gunicorn core.wsgi:application --bind 0.0.0.0:$PORT",
-},
+    schema = 1,
+    python_version = "3.13",
+    app_subdir = "core",
+    commands = {
+        "start": "gunicorn core.wsgi:application --bind 0.0.0.0:$PORT",
+    },
 )
 
 build = python_build(config)
 
 python_serve(
-config,
-build,
-name = "todo-app",
-cwd = "core",
-build_pre = [
-copy("requirements.txt"),
-],
-build_post = [
-run(
-"SECRET_KEY=build-only EMAIL_HOST_USER=build-only EMAIL_HOST_PASSWORD=build-only python manage.py collectstatic --noinput",
-group = "build",
-),
-],
-prepare = [
-run(
-"python manage.py migrate --noinput",
-group = "prepare",
-),
-],
-extra_env = {
-"WASMER": "true",
-"DEBUG": "False",
-},
+    config,
+    build,
+    name = "todo-app",
+
+    build_pre = [
+        copy("requirements.txt"),
+    ],
+
+    build_post = [
+        run(
+            "SECRET_KEY=build-only EMAIL_HOST_USER=build-only EMAIL_HOST_PASSWORD=build-only python manage.py collectstatic --noinput",
+            group = "build",
+        ),
+    ],
+
+    prepare = [
+        run(
+            "python manage.py migrate --noinput",
+            group = "prepare",
+        ),
+    ],
+
+    extra_env = {
+        "WASMER": "true",
+        "DEBUG": "False",
+    },
 )
