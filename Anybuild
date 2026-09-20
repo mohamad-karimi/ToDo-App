@@ -22,7 +22,7 @@ python_serve(
 
     build_post = [
         run(
-            "SECRET_KEY=build-only EMAIL_HOST_USER=build-only EMAIL_HOST_PASSWORD=build-only python manage.py collectstatic --noinput",
+            "cd core && SECRET_KEY=build-only EMAIL_HOST_USER=build-only EMAIL_HOST_PASSWORD=build-only python manage.py collectstatic --noinput",
             group = "build",
         ),
     ],
