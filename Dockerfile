@@ -5,10 +5,10 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
-COPY requirements.txt .
+COPY requirements.txt requirements-docker.txt ./
 
 RUN pip install --upgrade pip && \
-    pip install -r requirements.txt
+    pip install -r requirements-docker.txt
 
 COPY . .
 

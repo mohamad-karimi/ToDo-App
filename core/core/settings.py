@@ -24,8 +24,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config("SECRET_KEY")
 
+# Wasmer Edge (WASIX) deployment mode. When WASMER=true there is no PostgreSQL
+# driver and no Redis service, so SQLite and in-process cache/Celery are used.
+# Local and Docker runs leave it unset and keep PostgreSQL + Redis.
+WASMER = config("WASMER", default=False, cast=bool)
+
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config("DEBUG", default=True, cast=bool)
+DEBUG = config("DEBUG", default=not WASMER, cast=bool)
 
 ALLOWED_HOSTS = config(
     "ALLOWED_HOSTS",
@@ -89,11 +94,11 @@ WSGI_APPLICATION = "core.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-if DEBUG:
+if DEBUG or WASMER:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
+            "NAME": config("SQLITE_PATH", default=BASE_DIR / "db.sqlite3"),
         }
     }
 else:
@@ -230,16 +235,27 @@ EMAIL_USE_SSL = False
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 SERVER_EMAIL = EMAIL_HOST_USER
 
-# celery setting
-CELERY_BROKER_URL = "redis://todoapp-redis:6379/1"
+if WASMER:
+    # No Redis on Wasmer: tasks run in-process and the cache is per-process.
+    CELERY_BROKER_URL = "memory://"
+    CELERY_TASK_ALWAYS_EAGER = True
 
-# Cache config
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://todoapp-redis:6379/2",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.HerdClient",
-        },
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        }
     }
-}
+else:
+    # celery setting
+    CELERY_BROKER_URL = "redis://todoapp-redis:6379/1"
+
+    # Cache config
+    CACHES = {
+        "default": {
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": "redis://todoapp-redis:6379/2",
+            "OPTIONS": {
+                "CLIENT_CLASS": "django_redis.client.HerdClient",
+            },
+        }
+    }

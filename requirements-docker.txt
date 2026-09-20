@@ -1,0 +1,6 @@
+# Local / Docker requirements: the base requirements plus the PostgreSQL
+# driver. Not used by Wasmer (WASMER=true runs on SQLite, see settings.py).
+-r requirements.txt
+
+# PostgreSQL
+psycopg2-binary
