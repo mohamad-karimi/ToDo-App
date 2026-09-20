@@ -4,9 +4,9 @@ config = python_config(
     schema = 1,
     python_version = "3.13",
     app_subdir = "core",
-    commands = {
-        "start": "uvicorn core.asgi:application --host 0.0.0.0 --port $PORT",
-    },
+    python_framework = "django",
+    python_server = "uvicorn",
+    asgi_application = "core.asgi:application",
 )
 
 build = python_build(config)
@@ -22,15 +22,8 @@ python_serve(
 
     build_post = [
         run(
-            "cd core && SECRET_KEY=build-only EMAIL_HOST_USER=build-only EMAIL_HOST_PASSWORD=build-only python manage.py collectstatic --noinput",
+            "cd core && SECRET_KEY=build-only EMAIL_HOST_USER=build-only EMAIL_HOST_PASSWORD=build-only python manage.py migrate --noinput && SECRET_KEY=build-only EMAIL_HOST_USER=build-only EMAIL_HOST_PASSWORD=build-only python manage.py collectstatic --noinput",
             group = "build",
-        ),
-    ],
-
-    prepare = [
-        run(
-            "python manage.py migrate --noinput",
-            group = "prepare",
         ),
     ],
 
