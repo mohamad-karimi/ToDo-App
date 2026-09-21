@@ -1,0 +1,115 @@
+# Production stack. Image-based: it pulls the image that the CD workflow built
+# and pushed to GHCR, and never bind-mounts the source code.
+#
+# It is copied to the production host by .github/workflows/cd.yml and driven by
+# deploy/deploy.sh. `IMAGE` and `IMAGE_TAG` are supplied by the deploy script;
+# the application secrets come from the `.env` file that already lives next to
+# this file on the server (it is never stored in Git).
+#
+# Local development / CI keep using docker-compose.yml.
+
+name: todoapp
+
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+# Settings shared by the three services that run the application image.
+x-app: &app
+  image: "${IMAGE:?IMAGE is required (e.g. ghcr.io/owner/repo)}:${IMAGE_TAG:?IMAGE_TAG is required (full commit SHA)}"
+  env_file:
+    - .env
+  restart: unless-stopped
+  logging: *default-logging
+
+services:
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: redis-server --save 60 1 --loglevel warning
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    # core/settings.py points Celery and the cache at "todoapp-redis".
+    networks:
+      default:
+        aliases:
+          - todoapp-redis
+    logging: *default-logging
+
+  postgres:
+    image: postgres:16
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\""]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    logging: *default-logging
+
+  backend:
+    <<: *app
+    # entrypoint.sh (baked into the image) runs migrate + collectstatic and then
+    # execs this command, so the port only opens once both have finished.
+    command: gunicorn core.wsgi --bind 0.0.0.0:8000
+    volumes:
+      - static_volume:/app/core/staticfiles
+      - media_volume:/app/core/media
+    expose:
+      - "8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import socket; socket.create_connection(('127.0.0.1', 8000), 3).close()"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 20s
+
+  worker:
+    <<: *app
+    command: celery -A core worker -l INFO
+    depends_on:
+      redis:
+        condition: service_healthy
+      backend:
+        condition: service_healthy
+
+  beat:
+    <<: *app
+    command: celery -A core beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    depends_on:
+      redis:
+        condition: service_healthy
+      backend:
+        condition: service_healthy
+
+  nginx:
+    image: nginx:stable-alpine
+    restart: unless-stopped
+    ports:
+      - "${HTTP_PORT:-80}:80"
+    volumes:
+      - ./default.conf:/etc/nginx/conf.d/default.conf:ro
+      - static_volume:/home/app/static:ro
+      - media_volume:/home/app/media:ro
+    depends_on:
+      backend:
+        condition: service_healthy
+    logging: *default-logging
+
+volumes:
+  static_volume:
+  postgres_data:
+  media_volume:
